@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+</head>
+<body>
+<h2>Add New User</h2>
+
+<form id="addForm">
+    <label>Name:</label><br>
+    <input type="text" id="name" required><br>
+    <label>Email:</label><br>
+    <input type="email" id="email" required><br><br>
+    <button type="submit">Add User</button>
+</form>
+
+<p id="responseMsg"></p>
+
+<script>
+    document.getElementById("addForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+
+        const response = await fetch('/admin/add', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById("responseMsg").innerText = `User added with ID: ${data.id}`;
+        } else {
+            document.getElementById("responseMsg").innerText = "Failed to add user";
+        }
+    });
+</script>
+</body>
+</html>
+

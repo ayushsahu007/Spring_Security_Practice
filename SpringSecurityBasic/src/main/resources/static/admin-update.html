@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+</head>
+<body>
+<h2>Update User</h2>
+
+<form id="updateForm">
+    <label>User ID:</label><br>
+    <input type="number" id="updateId" required><br>
+    <label>New Name:</label><br>
+    <input type="text" id="updateName" required><br>
+    <label>New Email:</label><br>
+    <input type="email" id="updateEmail" required><br><br>
+    <button type="submit">Update</button>
+</form>
+
+<p id="responseMsg"></p>
+
+<script>
+    document.getElementById("updateForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const id = document.getElementById("updateId").value;
+        const name = document.getElementById("updateName").value;
+        const email = document.getElementById("updateEmail").value;
+
+        const response = await fetch(`/admin/update/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email })
+        });
+
+        if (response.ok) {
+            document.getElementById("responseMsg").innerText = `User ${id} updated successfully.`;
+        } else {
+            document.getElementById("responseMsg").innerText = "Update failed.";
+        }
+    });
+</script>
+</body>
+</html>
